@@ -8,3 +8,7 @@ $ mvn test
 $ mvn clojure:run
 
 script file locates src/main/script/run.clj
+
+## slime ##
+$ mvn clojure:swank &
+$ emacs -nw -f slime-connect
