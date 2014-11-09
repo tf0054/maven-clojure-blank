@@ -1,15 +1,6 @@
-## compile ##
+## how to exec
+$ mvn clean
+$ mvn clojure:compile
 $ mvn compile
+$ mvn exec:java -Dexec.mainClass="am.ik.blank.Hallo"
 
-## test ##
-$ mvn test
-
-## run script ##
-$ mvn clojure:run
-
-script file locates src/main/script/run.clj
-
-## slime ##
-$ mvn clojure:swank &
-
-$ emacs -nw -f slime-connect

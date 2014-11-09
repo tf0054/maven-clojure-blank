@@ -1,4 +1,5 @@
-(ns am.ik.blank.hello)
+(ns am.ik.blank.hello
+	(:gen-class
+:methods [#^{:static true} [foo [int] void]]))
 
-(defn foo [& args]
-  (apply str "foo" args))
+(defn -foo [i] (println "Hello from Clojure. My input was " i))
