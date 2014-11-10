@@ -18,7 +18,7 @@ import kafka.javaapi.consumer.ConsumerConnector;
 import java.util.UUID;
 //import java.lang.InterruptedException;
 
-public class StringReaderInputStream extends InputStream
+public class KafkaReadingInputStream extends InputStream
 {
     private String tmpStr;
     private StringReader reader;
@@ -29,8 +29,16 @@ public class StringReaderInputStream extends InputStream
 
     private Map<String, List<KafkaStream<byte[], byte[]>>> consumerStreams;
     private List<KafkaStream<byte[], byte[]>> streams;
-    
-    public StringReaderInputStream(StringReader reader)
+/*
+static
+{
+    Logger rootLogger = Logger.getRootLogger();
+    rootLogger.setLevel(Level.INFO);
+    rootLogger.addAppender(new ConsoleAppender(
+               new PatternLayout("%-6r [%p] %c - %m%n")));
+}    
+*/
+    public KafkaReadingInputStream(StringReader reader)
     {
         super();
         this.reader = reader;
@@ -54,7 +62,7 @@ public class StringReaderInputStream extends InputStream
 	List<KafkaStream<byte[], byte[]>> streams = consumerStreams.get(topic);
     }
     
-    public StringReaderInputStream(String value)
+    public KafkaReadingInputStream(String value)
     {
         this(new StringReader(value));
     }

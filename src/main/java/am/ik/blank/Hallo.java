@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 
 import am.ik.blank.hello;
-import am.ik.blank.StringReaderInputStream;
+import am.ik.blank.KafkaReadingInputStream;
 
 public class Hallo {
     public static String hello(String name) {
@@ -45,7 +45,7 @@ public class Hallo {
     // KafkaStream
     //
     BufferedReader br = new BufferedReader(new InputStreamReader(
-		    new StringReaderInputStream("xxxx\nyyyy\nzzzz\n")));
+		    new KafkaReadingInputStream("xxxx\nyyyy\nzzzz\n")));
     int intCount = 0;
     for (String line = br.readLine(); line != null; line = br.readLine()) {
        System.out.println((intCount++)+": "+line);
