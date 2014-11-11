@@ -15,12 +15,12 @@ import am.ik.blank.hello;
 import am.ik.blank.KafkaReadingInputStream;
 
 public class Hallo {
-    public static String hello(String name) {
+    public static String hello_c(String name) {
         return "Hello " + name + "!";
     }
     
     public static void main(String[] args) throws IOException {
-        System.out.println(hello("Clojure"));
+        System.out.println(hello_c("Clojure"));
         hello.foo(1);
 	hello h = new hello();
         System.out.println(h.echo("Dr.Bones"));

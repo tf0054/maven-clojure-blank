@@ -20,10 +20,10 @@ import java.util.UUID;
 
 public class KafkaReadingInputStream extends InputStream
 {
-    private String tmpStr;
     private StringReader reader;
 
     private long count;
+    private long readCount;
     private final ConsumerConnector consumer;
     private final String topic;
 
@@ -36,7 +36,7 @@ static
     rootLogger.setLevel(Level.INFO);
     rootLogger.addAppender(new ConsoleAppender(
                new PatternLayout("%-6r [%p] %c - %m%n")));
-}    
+}
 */
     public KafkaReadingInputStream(StringReader reader)
     {
@@ -55,13 +55,16 @@ static
 
         consumer = Consumer.createJavaConsumerConnector(new ConsumerConfig(props));
 
-	Map<String, Integer> topicCount = new HashMap<>();
-	topicCount.put(topic, 1);
+        Map<String, Integer> topicCount = new HashMap<>();
+        topicCount.put(topic, 1);
 
-	consumerStreams = consumer.createMessageStreams(topicCount);
-	List<KafkaStream<byte[], byte[]>> streams = consumerStreams.get(topic);
+        consumerStreams = consumer.createMessageStreams(topicCount);
+        streams = consumerStreams.get(topic);
+        System.out.println("The num of streams: "+streams.size()); // 1
+
+        readCount = 0;
     }
-    
+
     public KafkaReadingInputStream(String value)
     {
         this(new StringReader(value));
@@ -69,26 +72,38 @@ static
 
     public int read() throws IOException
     {
-	int tmpInt = reader.read();
+        int tmpInt = reader.read();
 
-	if(tmpInt == -1){
+        if(tmpInt == -1){
 
             String strLine = "";
-            streams = consumerStreams.get(topic);
+            ConsumerIterator<byte[], byte[]> it = streams.get(0).iterator();
+
+            if (it.hasNext()) { // read() would be called many times.
+                strLine = new String(it.next().message());
+                reader = new StringReader(strLine);
+                System.out.println("Message from Single Topic: " + strLine + " ("+count+"/"+readCount+")");
+                count++;
+            }else{
+                System.out.println("There is no Message");
+            }
+    /*
             for (final KafkaStream stream : streams) {
                 ConsumerIterator<byte[], byte[]> it = stream.iterator();
                 if (it.hasNext()) {
                     strLine = new String(it.next().message());
-		    reader = new StringReader(strLine);
+                    reader = new StringReader(strLine);
                     System.out.println("Message from Single Topic: " + strLine + " ("+count+")");
                     count++;
                 }else{
                     System.out.println("There is no Message");
                 }
             }
-
-	    tmpInt = reader.read();
-	}
-	return tmpInt;
+    */
+            tmpInt = reader.read();
+        }
+        readCount++;
+        System.out.print(tmpInt+",");
+        return tmpInt;
     }
 }
